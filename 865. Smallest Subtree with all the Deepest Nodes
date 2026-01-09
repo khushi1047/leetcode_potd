@@ -1,0 +1,48 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int height(TreeNode root){
+        if(root==null){
+            return 0;
+        }
+        int left = height(root.left);
+        int right = height(root.right);
+        return 1 + Math.max(left, right);
+    }
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        
+        // 5 -> left 1 height , right 2 height now stores the min of this which 2 
+        // then reutn max height now 2 return to root on 1 left it is 2 compare height
+
+        // approach: from root compare the height of left-subtree and right-tree ,
+        //  whom height is bigger move root in that direction and keeping a variable to where call it and store  the subtree of that node
+
+        TreeNode ans = null;
+        int lstheight = height(root.left);
+        int rstheight = height(root.right);
+
+        if(lstheight==rstheight) return root;
+        if(lstheight > rstheight){
+            ans = subtreeWithAllDeepest(root.left);
+        }
+        else if(lstheight < rstheight){
+            ans = subtreeWithAllDeepest(root.right);
+        }
+        
+        return ans;
+
+    }
+}
