@@ -1,0 +1,32 @@
+class Solution {
+    public int maxDistance(int[] colors) {
+        int n = colors.length;
+        // for(int i = 1;i<colors.length;i++){
+        //     if(colors[i]!= colors[mini] || colors[i]!=colors[maxi]){
+        //         mini = Math.min(i,mini);
+        //         maxi = Math.max(maxi,i);
+        //     }
+        // }
+        // return Math.abs(maxi-mini);
+
+        int maxd = 0;
+        // comparing wd first ele from end
+        for(int i = n-1;i>=0;i--){
+            if(colors[i]!= colors[0]){
+                maxd = Math.max(maxd, i);
+                break;
+            }
+        }
+
+        // comparing wd last ele from start
+        for(int i = 0;i<n;i++){
+            if(colors[i]!=colors[n-1]){
+                maxd = Math.max(maxd, n-1-i);
+                break;
+            }
+        }
+        return maxd;
+
+
+    }
+}
