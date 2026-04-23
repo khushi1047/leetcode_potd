@@ -1,0 +1,74 @@
+// class Solution {
+//     public long[] distance(int[] nums) {
+        // long[] ans = new long[nums.length];
+        // for(int i = 0;i<nums.length;i++){
+        //     int sum = 0;
+        //     for(int j = 0;j<nums.length;j++){
+        //         if(nums[i]==nums[j]){
+        //             sum = sum + Math.abs(i-j);
+        //         }
+        //     }
+        //     ans[i] = sum;
+        // }
+        // return ans;
+//     }
+// }
+
+
+ // optimized:
+        // FOR LHS
+        //  i  = frequency of nums[i] on the LHS of i (0->i-1)
+        //  sum of indices of currlele on LHS
+
+        // FOR RHS
+         //  i  = frequency of nums[i] on the RHS of i (i+1->n+1)
+        //  sum of indices of currele on RHS  
+
+
+import java.util.*;
+
+class Solution {
+    public long[] distance(int[] nums) {
+
+        int n = nums.length;
+        long[] ans = new long[n];
+
+        HashMap<Integer, Long> idxEleSum = new HashMap<>();
+        HashMap<Integer, Long> idxFreq = new HashMap<>();
+
+        // LEFT TO RIGHT
+        for (int i = 0; i < n; i++) {
+            int currele = nums[i];
+
+            if (idxFreq.containsKey(currele)) {
+                long count = idxFreq.get(currele);
+                long sum = idxEleSum.get(currele);
+
+                ans[i] += (long) i * count - sum;
+            }
+
+            idxEleSum.put(currele, idxEleSum.getOrDefault(currele, 0L) + i);
+            idxFreq.put(currele, idxFreq.getOrDefault(currele, 0L) + 1);
+        }
+
+        idxEleSum.clear();
+        idxFreq.clear();
+
+        // RIGHT TO LEFT
+        for (int i = n - 1; i >= 0; i--) {
+            int currele = nums[i];
+
+            if (idxFreq.containsKey(currele)) {
+                long count = idxFreq.get(currele);
+                long sum = idxEleSum.get(currele);
+
+                ans[i] += sum - (long) i * count;
+            }
+
+            idxEleSum.put(currele, idxEleSum.getOrDefault(currele, 0L) + i);
+            idxFreq.put(currele, idxFreq.getOrDefault(currele, 0L) + 1);
+        }
+
+        return ans;
+    }
+}
